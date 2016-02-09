@@ -1,182 +1,58 @@
 $(document).ready(function(){
 
-  // $('.memory-match-box').slideToggle('slow', function(){
-  //     if($('.memory-match-box').is(':hidden')){
-  //       $('.memory-match-box').text('if');
-  //     } else {
-  //       $('.memory-match-box').text('else');
-  //     }
-  //   });
-  var numberOfClicks = 0;
+  var animals = ['cat', 'cat', 'dog', 'dog', 'lion', 'lion', 'elephant', 'elephant', 'tiger', 'tiger', 'bear', 'bear', 'liger', 'liger', 'raccoon', 'raccoon'];
 
-  var values = ['cat', 'cat', 'car', 'car', 'dog', 'dog', 'rabbit', 'rabbit', 'snake', 'snake', 'fish', 'fish', 'bear', 'bear', 'kangaroo', 'kangaroo']
-  
-  var value = values[Math.floor(values.length * Math.random())];
+  var clickCount = 0;
 
-  var boxes = $('.memory-match-box');
+  var comparisonArray = [];
 
-  $('.memory-match-box').html().addClass('hide');
+  var matchCount = 0;
 
-  for(i = 0; i < boxes.length; i++){
-    var box = boxes[i];
-    box.innerHTML = values.splice(Math.floor(values.length * Math.random()), 1);
+  var divArray = [];
+
+  function innerHTML () {
+    $('.memory-card').each(function() {
+      var randomElement = Math.floor(Math.random() * animals.length);
+      var animal = animals.splice(randomElement, 1).toString();
+      $(this).html(animal);
+    })
   };
-  
 
-  $('.memory-match-box').click(function(){
-    numberOfClicks += 1;
-    $(this).addClass('clicked');
-    $(this).removeClass('hidden');
+  innerHTML();
 
-    clicks();
+  $('.card-panel').click(function(){
+    clickCount++;
+    text = $(this).children().first();
+    text.removeClass('hide');
+    divArray.unshift(text);
+    comparisonArray.unshift(text.html());
+    if (clickCount == 2) {
+      matchCheck(divArray);
+    }
+
   });
 
-  // $('#box1').click(function(){
-  //    numberOfClicks += 1;
-  //    $(this).addClass('clicked');
-     
-  //    clicks();
-  // });
 
-  // $('#box2').click(function(){
-  //   numberOfClicks += 1;
-  //   $(this).addClass('clicked');
-     
-  //    clicks();
-  // });
-
-  // $('#box3').click(function(){
-  //   numberOfClicks += 1;
-  //   $(this).addClass('clicked');
-    
-  //   clicks();
-  // });
-
-  // $('#box4').click(function(){
-  //   numberOfClicks += 1;
-  //   $(this).addClass('clicked');
-    
-  //   clicks();
-  // });
-
-  // $('#box5').click(function(){
-  //   numberOfClicks += 1;
-  //   $(this).addClass('clicked');
-    
-  //   clicks();
-  // });
-
-  // $('#box6').click(function(){
-  //   numberOfClicks += 1;
-  //   $(this).addClass('clicked');
-    
-  //   clicks();
-  // });
-
-  // $('#box7').click(function(){
-  //   numberOfClicks += 1;
-  //   $(this).addClass('clicked');
-    
-  //   clicks();
-  // });
-
-  // $('#box8').click(function(){
-  //   numberOfClicks += 1;
-  //   $(this).addClass('clicked');
-    
-  //   clicks();
-  // });
-
-  // $('#box9').click(function(){
-  //   numberOfClicks += 1;
-  //   $(this).addClass('clicked');
-    
-  //   clicks();
-  // });
-
-  // $('#box10').click(function(){
-  //   numberOfClicks += 1;
-  //   $(this).addClass('clicked');
-    
-  //   clicks();
-  // });
-
-  // $('#box11').click(function(){
-  //   numberOfClicks += 1;
-  //   $(this).addClass('clicked');
-    
-  //   clicks();
-  // });
-
-  // $('#box12').click(function(){
-  //   numberOfClicks += 1;
-  //   $(this).addClass('clicked');
-    
-  //   clicks();
-  // });
-
-  // $('#box13').click(function(){
-  //   numberOfClicks += 1;
-  //   $(this).addClass('clicked');
-    
-  //   clicks();
-  // });
-
-  // $('#box14').click(function(){
-  //   numberOfClicks += 1;
-  //   $(this).addClass('clicked');
-    
-  //   clicks();
-  // });
-
-  // $('#box15').click(function(){
-  //   numberOfClicks += 1;
-  //   $(this).addClass('clicked');
-
-  //   clicks();
-  // });
-
-  // $('#box16').click(function(){
-  //   numberOfClicks += 1;
-  //   $(this).addClass('clicked');
-    
-  //   clicks();
-  // });
-
-  function clicks(){
-    while (numberOfClicks == 2){
-        var array = []
-
-        $('.clicked').each(function() {
-        array.push(this.innerHTML);
-        console.log(array);
-        });
-        if (array[0] == array[1]) {
-        alert('you win!');
-        numberOfClicks = 0;
-
-        } else {
-        numberOfClicks = 0;
-        alert('no match');
-        $('.clicked').each(function() {
-        $(this).removeClass('clicked');
-        this.innerHTML = '';
-        });
-        }
-      };
+  function matchCheck(divArray) {
+    if (comparisonArray[0] == comparisonArray[1]) {
+      alert('It is a match!');
+      matchCount++;
+      gameOverCheck();
+    } else {
+        alert('Nope, try again!');
+        divArray[0].addClass('hide');
+        divArray[1].addClass('hide');
+        clickCount = 0;
+        divArray.length = 0;
+    }
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+  function gameOverCheck() {
+    if (matchCount == 8) {
+      alert('You win!');
+      location.reload();
+    } else {
+      clickCount = 0;
+    }
+  }
 });
